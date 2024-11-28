@@ -1,0 +1,32 @@
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 10px;
+    justify-content: center;
+  }
+  
+  .grid-item {
+    width: 100px;
+    height: 100px;
+    background-color: #fffd95;
+    border: 1px solid #000000;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .grid-item.taken {
+    pointer-events: none;
+    color: #ff0000;
+  }
+  
+  img {
+    max-width: 100px;
+  }
+  
