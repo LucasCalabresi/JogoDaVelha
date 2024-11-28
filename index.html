@@ -9,12 +9,27 @@
 </head>
 <body>
   <div class="container mt-5 text-center">
+    <form id="playerForm" class="mb-4">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="player1" class="form-label">Jogador 1 (X):</label>
+          <input type="text" id="player1" class="form-control" placeholder="Nome do Jogador 1" required>
+        </div>
+        <div class="col">
+          <label for="player2" class="form-label">Jogador 2 (O):</label>
+          <input type="text" id="player2" class="form-control" placeholder="Nome do Jogador 2" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success">Iniciar Jogo</button>
+    </form>
+  
     <div class="d-flex justify-content-between mb-3">
-      <img src="—Pngtree—silver haired old lady clip_5977972 esquerda.png" alt="Imagem esquerda" class="img-fluid rounded">
+      <img src="—Pngtree—silver haired old lady clip_5977972 esquerda.png" alt="Idosa sorrindo do lado esquerdo" class="img-fluid rounded">
       <h1>Jogo da Idosa</h1>
-      <img src="—Pngtree—silver haired old lady clip_5977972 - direita.png" alt="Imagem direita" class="img-fluid rounded">
+      <img src="—Pngtree—silver haired old lady clip_5977972 - direita.png" alt="Idosa sorrindo do lado direito" class="img-fluid rounded">
     </div>
-    <div id="game" class="grid-container">
+  
+    <div id="game" class="grid-container d-none">
       <div class="grid-item" data-cell></div>
       <div class="grid-item" data-cell></div>
       <div class="grid-item" data-cell></div>
@@ -25,9 +40,10 @@
       <div class="grid-item" data-cell></div>
       <div class="grid-item" data-cell></div>
     </div>
-    <button id="restart" class="btn btn-primary mt-3">Reiniciar Jogo</button>
+    <button id="restart" class="btn btn-primary mt-3 d-none">Reiniciar Jogo</button>
     <p id="winnerMessage" class="mt-3"></p>
   </div>
+  
   <script src="script.js"></script>
 </body>
 </html>
