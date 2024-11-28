@@ -1,58 +1,73 @@
-const cells = document.querySelectorAll('[data-cell]');
+const playerForm = document.getElementById('playerForm');
+const player1Input = document.getElementById('player1');
+const player2Input = document.getElementById('player2');
+const gameBoard = document.getElementById('game');
 const restartButton = document.getElementById('restart');
 const winnerMessage = document.getElementById('winnerMessage');
+const cells = document.querySelectorAll('[data-cell]');
 
-let currentPlayer = 'X';
+let player1Name = '';
+let player2Name = '';
+let isXTurn = true;
 
-const checkWinner = () => {
-  const winningCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
+playerForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  player1Name = player1Input.value;
+  player2Name = player2Input.value;
 
-  return winningCombinations.some(combination => {
-    return combination.every(index => {
-      return cells[index].textContent === currentPlayer;
-    });
-  });
-};
+  playerForm.classList.add('d-none');
+  gameBoard.classList.remove('d-none');
+  restartButton.classList.remove('d-none');
+});
 
-const isDraw = () => {
-  return [...cells].every(cell => cell.textContent !== '');
-};
-
-const handleClick = (e) => {
-  const cell = e.target;
-
-  cell.textContent = currentPlayer;
-  cell.classList.add('taken');
-
-  if (checkWinner()) {
-    winnerMessage.textContent = `Jogador ${currentPlayer} venceu!`;
-    cells.forEach(cell => cell.removeEventListener('click', handleClick));
-  } else if (isDraw()) {
-    winnerMessage.textContent = 'Empate!';
-  } else {
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-  }
-};
-
-const startGame = () => {
-  currentPlayer = 'X';
-  winnerMessage.textContent = '';
+function restartGame() {
   cells.forEach(cell => {
     cell.textContent = '';
-    cell.classList.remove('taken');
-    cell.addEventListener('click', handleClick, { once: true });
+    cell.classList.remove('x', 'o');
   });
-};
+  winnerMessage.textContent = '';
+  isXTurn = true;
+}
 
-restartButton.addEventListener('click', startGame);
+function checkWin() {
+  const winningCombinations = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
 
-startGame();
+  for (const combo of winningCombinations) {
+    const [a, b, c] = combo;
+    if (
+      cells[a].textContent &&
+      cells[a].textContent === cells[b].textContent &&
+      cells[a].textContent === cells[c].textContent
+    ) {
+      return cells[a].textContent;
+    }
+  }
+  return null;
+}
+
+cells.forEach(cell => {
+  cell.addEventListener('click', () => {
+    if (cell.textContent || winnerMessage.textContent) return;
+
+    cell.textContent = isXTurn ? 'X' : 'O';
+    cell.classList.add(isXTurn ? 'x' : 'o');
+    const winner = checkWin();
+    if (winner) {
+      winnerMessage.textContent = `${winner === 'X' ? player1Name : player2Name} venceu!`;
+    } else if (Array.from(cells).every(cell => cell.textContent)) {
+      winnerMessage.textContent = 'Empate!';
+    }
+    isXTurn = !isXTurn;
+  });
+});
+
+restartButton.addEventListener('click', () => {
+  restartGame();
+  playerForm.classList.remove('d-none');
+  gameBoard.classList.add('d-none');
+  restartButton.classList.add('d-none');
+});
